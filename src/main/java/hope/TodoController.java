@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import hope.Todo; 
 import hope.TodoRepository; 
@@ -26,8 +29,16 @@ public class TodoController {
     }
 
     @GetMapping(path="/{id}")
-    public @ResponseBody Todo show(@PathVariable Integer id) {
-        return todoRepository.findOne(id);
+    public @ResponseBody ResponseEntity<?> show(@PathVariable Integer id) {
+        Todo todo = todoRepository.findOne(id);
+
+        if (todo == null) {
+            // return ResponseEntity.notFound().build();
+            HttpError httpError = new HttpError(404, "Resource " + id + " not found");
+            return new ResponseEntity(httpError, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(todoRepository.findOne(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
