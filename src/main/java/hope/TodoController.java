@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import hope.Todo; 
 import hope.TodoRepository; 
@@ -42,8 +45,27 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody String delete(@PathVariable Integer id) {
-        todoRepository.delete(id);
-        return "Deleted";
+    public @ResponseBody ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            todoRepository.delete(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            HttpError httpError = new HttpError(404, "Resource " + id + " not found");
+            return new ResponseEntity(httpError, HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            System.out.println("An exception occurred: " + e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        // return "Deleted";
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> save(@RequestBody Todo todo) {
+        Todo savedTodo = todoRepository.save(todo);
+
+        return new ResponseEntity(savedTodo, HttpStatus.CREATED);
     }
 }
