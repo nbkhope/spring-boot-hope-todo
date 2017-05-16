@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,5 +68,21 @@ public class TodoController {
         Todo savedTodo = todoRepository.save(todo);
 
         return new ResponseEntity(savedTodo, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public @ResponseBody ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Todo todoBody) {
+        Todo todo = todoRepository.findOne(id);
+
+        if (todo == null) {
+            HttpError httpError = new HttpError(404, "Resource " + id + " not found");
+            return new ResponseEntity(httpError, HttpStatus.NOT_FOUND);
+        }
+
+        if (todoBody.getContent() != null) {
+            todo.setContent(todoBody.getContent());
+        }
+
+        return new ResponseEntity(todoRepository.save(todo), HttpStatus.OK);
     }
 }
