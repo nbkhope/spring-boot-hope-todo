@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,5 +28,11 @@ public class TodoController {
     @GetMapping(path="/{id}")
     public @ResponseBody Todo show(@PathVariable Integer id) {
         return todoRepository.findOne(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody String delete(@PathVariable Integer id) {
+        todoRepository.delete(id);
+        return "Deleted";
     }
 }
