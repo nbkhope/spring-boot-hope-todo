@@ -1,4 +1,4 @@
-package hope;
+package hope.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import hope.Todo; 
-import hope.TodoRepository; 
+import hope.model.Todo; 
+import hope.repository.TodoRepository; 
+import hope.HttpError;
 
 @Controller
 @RequestMapping(path="/todos")
