@@ -29,13 +29,15 @@ public class TodoController {
     private TodoRepository todoRepository;
 
     @GetMapping(path="")
+    // public ResponseEntity<?> index() {
     public @ResponseBody Iterable<Todo> index() {
         // This returns a JSON or XML
         return todoRepository.findAll();
+        // return new ResponseEntity(todoRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path="/{id}")
-    public @ResponseBody ResponseEntity<?> show(@PathVariable Integer id) {
+    public ResponseEntity<?> show(@PathVariable Integer id) {
         Todo todo = todoRepository.findOne(id);
 
         if (todo == null) {
@@ -48,7 +50,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> delete(@PathVariable Integer id) {
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
             todoRepository.delete(id);
         }
@@ -73,7 +75,7 @@ public class TodoController {
     }
 
     @PutMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> update(@PathVariable Integer id, @Validated @RequestBody Todo todoBody) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Validated @RequestBody Todo todoBody) {
         Todo todo = todoRepository.findOne(id);
 
         if (todo == null) {

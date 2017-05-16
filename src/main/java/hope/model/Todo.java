@@ -11,7 +11,7 @@ public class Todo {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    @NotNull
+    @NotNull(message="error.content.notnull")
     private String content;
 
     public Integer getId() {
