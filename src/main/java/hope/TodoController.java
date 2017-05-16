@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -64,14 +65,14 @@ public class TodoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Todo todo) {
+    public ResponseEntity<?> save(@Validated @RequestBody Todo todo) {
         Todo savedTodo = todoRepository.save(todo);
 
         return new ResponseEntity(savedTodo, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Todo todoBody) {
+    public @ResponseBody ResponseEntity<?> update(@PathVariable Integer id, @Validated @RequestBody Todo todoBody) {
         Todo todo = todoRepository.findOne(id);
 
         if (todo == null) {
