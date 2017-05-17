@@ -46,7 +46,7 @@ public class TodoController {
             return new ResponseEntity(httpError, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(todoRepository.findOne(id), HttpStatus.OK);
+        return new ResponseEntity(todo, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
