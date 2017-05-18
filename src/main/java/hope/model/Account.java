@@ -1,12 +1,16 @@
 package hope.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,11 +23,15 @@ public class Account {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(mappedBy="account")
+    @OneToMany(mappedBy="account", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Todo> todos = new ArrayList<>();
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    @Size(min=6)
     private String password;
+    @NotNull
+    @Size(min=2, max=30)
     private String username;
 
     public Integer getId() {
