@@ -50,6 +50,14 @@ public class Account {
         return username;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     Account() { // jpa only
     }
 
